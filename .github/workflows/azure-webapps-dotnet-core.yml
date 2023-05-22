@@ -67,3 +67,20 @@ jobs:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+    
+    owasp:
+      runs-on: ubuntu-latest
+      needs: deploy
+      environment:
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+      steps:
+        - name: ZAP Scan
+          uses: zaproxy/action-baseline@v0.7.0
+          with:
+            token: ${{ secrets.GITHUB_TOKEN }}
+            docker_name: 'owasp/zap2docker-stable'
+            target: ${{ env.url }}
+            cmd_options: '-a'
+            issue_title: 'OWASP Testing Results'
+
