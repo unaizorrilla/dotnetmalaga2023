@@ -77,7 +77,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           docker_name: 'owasp/zap2docker-stable'
-          target: '${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net'
+          target: 'http://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net'
           cmd_options: '-a'
           issue_title: 'OWASP Testing Results'
 
